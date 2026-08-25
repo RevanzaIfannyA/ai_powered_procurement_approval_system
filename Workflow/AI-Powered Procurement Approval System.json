@@ -1,0 +1,1556 @@
+{
+  "name": "AI-Powered Procurement Approval System",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Expense Approval and Tracking Form",
+        "formDescription": "Fill this form",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Employee Code",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Product Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Proposed Price (IDR)",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Approver Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Purchase Reason",
+              "fieldType": "textarea",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        288,
+        -608
+      ],
+      "id": "08faa4a0-873a-4fd1-8217-06e5addcf182",
+      "name": "Form Trigger",
+      "webhookId": "75bc629b-640e-47ab-a653-34dbb82fb9b3"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1H8WypNeyifut4jmFO5W55LkfKUzbfk7JQzL4-w1pL4k",
+          "mode": "list",
+          "cachedResultName": "Employee Code",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8WypNeyifut4jmFO5W55LkfKUzbfk7JQzL4-w1pL4k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8WypNeyifut4jmFO5W55LkfKUzbfk7JQzL4-w1pL4k/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -160,
+        -336
+      ],
+      "id": "51696085-7b50-413f-9a58-897409ea3288",
+      "name": "Get Employee Database",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0T5RBgkNNFW5XA0P",
+          "name": "Google Sheets account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const employeeCodes = items.map(item => item.json[\"Employee Code\"]);\nconst employeecodesearch = $('Form Trigger').first().json['Employee Code'];\n\nconst isExist = employeeCodes.includes(employeecodesearch);\n\nreturn [{\n  json: {\n    employeeCodes: employeeCodes,\n    employeecodeSearch: employeecodesearch,\n    isEmployeeExist: isExist  // Boolean true/false\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        -336
+      ],
+      "id": "97b124fe-7a86-4e28-a232-97196240d6b1",
+      "name": "Validate Employee Code"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1H8WypNeyifut4jmFO5W55LkfKUzbfk7JQzL4-w1pL4k",
+          "mode": "list",
+          "cachedResultName": "Employee Code",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8WypNeyifut4jmFO5W55LkfKUzbfk7JQzL4-w1pL4k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8WypNeyifut4jmFO5W55LkfKUzbfk7JQzL4-w1pL4k/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Employee Code",
+              "lookupValue": "={{ $('Form Trigger').item.json['Employee Code'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        288,
+        -336
+      ],
+      "id": "b804b04d-1234-4618-8b07-8f2179c663bb",
+      "name": "Get Employee Email",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0T5RBgkNNFW5XA0P",
+          "name": "Google Sheets account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1YiG4qa36PriAps3Y6uUYkUhILuATBIaE9cJnFwQSrjw",
+          "mode": "list",
+          "cachedResultName": "Approval n8n Learn",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YiG4qa36PriAps3Y6uUYkUhILuATBIaE9cJnFwQSrjw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1905945213,
+          "mode": "list",
+          "cachedResultName": "Form Responses",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YiG4qa36PriAps3Y6uUYkUhILuATBIaE9cJnFwQSrjw/edit#gid=1905945213"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $('Form Trigger').item.json.submittedAt ? new Date($('Form Trigger').item.json.submittedAt).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/\\//g, '-') : '' }}",
+            "Employee Code": "={{ $('Form Trigger').item.json['Employee Code'] }}",
+            "Product Name": "={{ $('Form Trigger').item.json['Product Name'] }}",
+            "Proposed Price (Rp)": "={{ $('Form Trigger').item.json['Proposed Price (IDR)'] }}",
+            "Approval Status": "UNDER REVIEW",
+            "Unique ID": "={{ $execution.id + '-' + $('Form Trigger').item.json['Employee Code'] }}",
+            "Approver's Email": "={{ $('Form Trigger').item.json['Approver Email'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Employee Code",
+              "displayName": "Employee Code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Unique ID",
+              "displayName": "Unique ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Proposed Price (Rp)",
+              "displayName": "Proposed Price (Rp)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Approver's Email",
+              "displayName": "Approver's Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Purchase Reason",
+              "displayName": "Purchase Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Market Price (AI)",
+              "displayName": "Market Price (AI)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Difference (IDR)",
+              "displayName": "Difference (IDR)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Percentage Difference",
+              "displayName": "Percentage Difference",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Found",
+              "displayName": "Product Found",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Link",
+              "displayName": "Product Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Approval Status",
+              "displayName": "Approval Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Approved/Rejected At",
+              "displayName": "Approved/Rejected At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -128,
+        32
+      ],
+      "id": "8df4f735-e071-4ed6-bc58-d02e0df230cd",
+      "name": "Save Request to Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0T5RBgkNNFW5XA0P",
+          "name": "Google Sheets account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "63b95d0b-0726-4f11-bb1a-f7be4c82f829",
+              "leftValue": "={{ $('Validate Employee Code').item.json.isEmployeeExist }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        96,
+        32
+      ],
+      "id": "9ff2ae9d-742c-41a7-96f5-d14db58f813d",
+      "name": "Valid Employee?"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Employee Email').item.json.Email }}",
+        "subject": "=Purchase Request Received - #{{ $execution.id + '-' + $('Form Trigger').item.json['Employee Code'] }}",
+        "emailType": "text",
+        "message": "=PURCHASE REQUEST RECEIVED\n\nDear {{ $('Get Employee Email').item.json['Employee Name'] }},\n\nThank you for submitting your purchase request. We have received your request and it is now being processed.\n\nREQUEST DETAILS\nRequest ID       : #{{ $execution.id + '-' + $('Form Trigger').item.json['Employee Code'] }}\nProduct          : {{ $('Form Trigger').item.json['Product Name'] }}\nProposed Price   : Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\nSubmitted At     : {{ new Date($('Form Trigger').item.json.submittedAt).toLocaleString('en-US', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) }}\n\nNEXT STEPS\n1. Our system is now analyzing your request\n2. The request will be sent to your approver for review\n3. You will receive a notification once a decision has been made\n4. The process typically takes 1-2 working days\n\nIf you have any questions, please contact your approver directly.\n\nThank you,\nProcurement Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        -64
+      ],
+      "id": "bd99e387-e977-46fa-af9f-6f27e64c771f",
+      "name": "Send Confirmation to Employee",
+      "webhookId": "2138fb5a-3021-4d9e-a058-782e6f6098e5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OeuOlQg9q21mgF5Y",
+          "name": "Gmail account prima"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        320,
+        128
+      ],
+      "id": "2866388f-0f69-406c-bd25-b703b1641653",
+      "name": "Invalid Code - Do Nothing"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Product: {{ $('Form Trigger').item.json['Product Name'] }}\n\nProposed Price (IDR): {{ $('Form Trigger').item.json['Proposed Price (IDR)'] }}\n\nReason: {{ $('Form Trigger').item.json['Purchase Reason'] }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a Procurement Validation AI Agent. Your role is to analyze purchase requests and provide data-driven recommendations to approvers.\n\n---\n\n## YOUR TASK\n\nYou will receive:\n- **Product Name**: The item the employee wants to purchase\n- **Proposed Price (IDR)**: The price submitted by the employee\n- **Reason**: The justification for the purchase\n\nYour job is to:\n1. Research the current market price of the product using available search tools\n2. **Find the best deal** - Identify the cheapest official/trusted seller\n3. **Provide the product link** - So approver can verify the price directly\n4. Compare the proposed price against market data\n5. Flag any potential issues (overpricing, underpricing, or suspicious requests)\n6. Provide a clear recommendation to the approver\n\n---\n\n## RESEARCH INSTRUCTIONS\n\n### Step 1: Find Market Price & Best Deal\n- Search for the product using the exact product name provided\n- Look for official retailer prices (e.g., Tokopedia, Shopee, Blibli, or official brand stores)\n- **Find the best price** - Identify the lowest price from a trusted/verified seller\n- **Capture the product URL** - Get the direct link to the product page\n\n### Step 2: Select the Best Link\n- Priority order for selecting the best link:\n  1. **Official Brand Store** (e.g., \"Official Acer Store\") - most trustworthy\n  2. **Power Merchant / Mall** on marketplace - verified seller\n  3. **Regular seller with high rating** (>4.5 stars, >1000 transactions)\n- If multiple options exist, choose the **lowest price** among trusted sellers\n\n### Step 3: Calculate Price Difference\n- Compare the proposed price against the market price\n- Calculate the difference in percentage: `(Proposed Price - Market Price) / Market Price * 100%`\n\n### Step 4: Assess Risk Level\n\n| **Price Difference** | **Risk Level** | **Action** |\n|----------------------|----------------|------------|\n| ≤ +10% | LOW | Acceptable (fair price) |\n| +11% to +30% | MEDIUM | Review recommended (slightly overpriced) |\n| +31% to +50% | HIGH | Flag for review (significant overpricing) |\n| > +50% | CRITICAL | Strongly warn approver (potential fraud) |\n| Negative (Below market) | LOW | Acceptable (good deal, but verify product authenticity) |\n\n### Step 5: Evaluate the Reason\n- Check if the reason is valid and business-relevant\n- Flag if the reason is vague, generic, or doesn't justify the expense\n- Example of weak reasons: \"Need it\", \"Important\", \"Urgent\"\n- Example of strong reasons: Specific use case, productivity improvement, project requirement\n\n---\n\n## OUTPUT FORMAT\n\nYou must respond with **ONLY the following JSON structure** (no additional text, no markdown, no explanations):\n\n```json\n{\n  \"market_price\": \"Rp X.XXX.XXX\",\n  \"best_deal_link\": \"https://www.tokopedia.com/...\",\n  \"seller_name\": \"Official Acer Store\",\n  \"price_difference\": \"+XX%\",\n  \"risk_level\": \"LOW | MEDIUM | HIGH | CRITICAL\",\n  \"recommendation\": \"APPROVE | REVIEW | REJECT\",\n  \"summary\": \"Brief 1-2 sentence explanation for the approver\",\n  \"warning\": \"If risk_level is HIGH or CRITICAL, include a specific warning. Otherwise, set to null.\",\n  \"product_found\": true/false\n}\n```\n\n### Field Explanations:\n- **market_price**: The current market price you found (in IDR)\n- **best_deal_link**: The direct URL to the product page with the best price\n- **seller_name**: The name of the seller/store offering the best price\n- **price_difference**: The percentage difference (e.g., \"+15%\", \"-5%\")\n- **risk_level**: Based on the difference percentage (LOW/MEDIUM/HIGH/CRITICAL)\n- **recommendation**: \n  - `APPROVE` if risk_level is LOW or MEDIUM\n  - `REVIEW` if risk_level is HIGH\n  - `REJECT` if risk_level is CRITICAL\n- **summary**: A clear, professional summary for the approver\n- **warning**: Specific warning if the risk is HIGH/CRITICAL (e.g., \"The proposed price is 65% above market value. Strongly suggest rejecting this request and investigating further.\")\n- **product_found**: Whether you found the exact product in your search\n\n---\n\n## IMPORTANT RULES\n\n1. **Always research first** - Never skip the market research step\n2. **Be objective** - Base recommendations on data, not assumptions\n3. **Use official sources** - Prioritize trusted Indonesian e-commerce platforms\n4. **Always include a link** - Every response must include `best_deal_link` field\n5. **Consider specifications** - If the product has variations, compare similar specs\n6. **Escalate suspicious cases** - If the price difference is >50%, always include a clear warning\n7. **Keep it professional** - Use professional language throughout\n8. **No markdown in link** - Return the raw URL, not formatted as markdown\n\n---\n\n## EXAMPLE OUTPUT\n\n### Input:\n```\nProduct: ACER ASPIRE LITE 14 AL14-37P CORE 3 N355 8GB 512GB SSD 14\" FHD IPS W11H OH2024 - LIGHT SILVER\nProposed Price (IDR): 20,000,000\nReason: I need a faster laptop for ML model training\n```\n\n### Output:\n{\n  \"market_price\": \"Rp12,500,000\",\n  \"best_deal_link\": \"https://www.tokopedia.com/acer-official/acer-aspire-lite-14-al14-37p-core-3-n355-8gb-512gb\",\n  \"seller_name\": \"Official Acer Store\",\n  \"price_difference\": \"+60%\",\n  \"risk_level\": \"CRITICAL\",\n  \"recommendation\": \"REJECT\",\n  \"summary\": \"The proposed price is 60% above the current market price. The best deal found is from Official Acer Store at Rp 12,500,000.\",\n  \"warning\": \"⚠️ This price is unusually high (60% above market). Recommend investigating the vendor relationship and asking for a detailed price breakdown. Potential fraud alert.\",\n  \"product_found\": true\n}\n\n---\n\n## WHAT IF PRODUCT NOT FOUND?\n\nIf you cannot find the exact product, search for similar products with matching specifications. If still not found:\n\n{\n  \"market_price\": \"Not found\",\n  \"best_deal_link\": null,\n  \"seller_name\": null,\n  \"price_difference\": null,\n  \"risk_level\": \"MEDIUM\",\n  \"recommendation\": \"REVIEW\",\n  \"summary\": \"Unable to find this product in the market. Approver should manually verify the price or request a quote from 2-3 vendors.\",\n  \"warning\": \"Product not found in market. Manual price verification required.\",\n  \"product_found\": false\n}\n\n---\n\n## REMEMBER\n\n- You are a **data-driven validator**, not a decision-maker\n- Your job is to provide **objective analysis** so approvers can make informed decisions\n- Always be **transparent** about the data you found\n- **Always include a link** when possible - this builds trust and transparency\n- If the product is not found, state that clearly and suggest alternatives"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        608,
+        -64
+      ],
+      "id": "71eb4a8e-595d-4bef-bee7-8ea9809bb9d5",
+      "name": "AI Market Research",
+      "retryOnFail": true,
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavilyTool",
+      "typeVersion": 1,
+      "position": [
+        800,
+        176
+      ],
+      "id": "2e07c01e-103e-45d6-b031-c2bb1eb3f187",
+      "name": "Tavily Search",
+      "credentials": {
+        "tavilyApi": {
+          "id": "fRGJ432qbruGhSxy",
+          "name": "Tavily account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        176
+      ],
+      "id": "a50de876-4fd7-4056-8ccb-cd861fafe9b0",
+      "name": "Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "GES2NT7qgfyRlz3W",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"market_price\": \"Rp12,500,000\",\n  \"best_deal_link\": \"https://www.tokopedia.com/acer-official/acer-aspire-lite-14-al14-37p-core-3-n355-8gb-512gb\",\n  \"seller_name\": \"Official Acer Store\",\n  \"price_difference\": \"+60%\",\n  \"risk_level\": \"CRITICAL\",\n  \"recommendation\": \"REJECT\",\n  \"summary\": \"The proposed price is 60% above the current market price. The best deal found is from Official Acer Store at Rp 12,500,000.\",\n  \"warning\": \"⚠️ This price is unusually high (60% above market). Recommend investigating the vendor relationship and asking for a detailed price breakdown. Potential fraud alert.\",\n  \"product_found\": true\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        992,
+        176
+      ],
+      "id": "066e1a38-7f38-46a9-b26f-67868020227a",
+      "name": "Parse AI Output"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1YiG4qa36PriAps3Y6uUYkUhILuATBIaE9cJnFwQSrjw",
+          "mode": "list",
+          "cachedResultName": "Approval n8n Learn",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YiG4qa36PriAps3Y6uUYkUhILuATBIaE9cJnFwQSrjw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1905945213,
+          "mode": "list",
+          "cachedResultName": "Form Responses",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YiG4qa36PriAps3Y6uUYkUhILuATBIaE9cJnFwQSrjw/edit#gid=1905945213"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Unique ID": "={{ $('Save Request to Sheet').item.json['Unique ID'] }}",
+            "Market Price (AI)": "={{ $json.output.market_price ? $json.output.market_price.replace(/[^0-9]/g, '') : '' }}",
+            "Difference (IDR)": "={{ ($('Form Trigger').item.json['Proposed Price (IDR)'] - parseInt(($json.output.market_price || '0').replace(/[^0-9]/g, ''))) }}",
+            "Percentage Difference": "='{{ $json.output.price_difference }}",
+            "Product Found": "={{ $json.output.product_found }}",
+            "Product Link": "={{ $json.output.best_deal_link }}",
+            "Approval Status": "AWAITING APPROVAL"
+          },
+          "matchingColumns": [
+            "Unique ID"
+          ],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Employee Code",
+              "displayName": "Employee Code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Unique ID",
+              "displayName": "Unique ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Proposed Price (Rp)",
+              "displayName": "Proposed Price (Rp)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Approver",
+              "displayName": "Approver",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reason",
+              "displayName": "Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Market Price (AI)",
+              "displayName": "Market Price (AI)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Difference (IDR)",
+              "displayName": "Difference (IDR)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Percentage Difference",
+              "displayName": "Percentage Difference",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Found",
+              "displayName": "Product Found",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Link",
+              "displayName": "Product Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Approval Status",
+              "displayName": "Approval Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1008,
+        -64
+      ],
+      "id": "bf6d35cb-a3dc-44d1-8e17-cb9546fd1f9a",
+      "name": "Save AI Results to Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0T5RBgkNNFW5XA0P",
+          "name": "Google Sheets account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "70d44c0d-efe6-4438-83fe-a5dc44cb3a61",
+              "leftValue": "={{ $('AI Market Research').item.json.output.product_found }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1232,
+        -64
+      ],
+      "id": "5ae656d6-5b19-41e5-bca5-98edf908a245",
+      "name": "Product Found?"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "={{ $('Form Trigger').item.json['Approver Email'] }}",
+        "subject": "=Purchase Request Approval Needed: {{ $('Form Trigger').item.json['Product Name'] }}",
+        "message": "=PURCHASE REQUEST APPROVAL\n\nDear Approver,\n\nA new purchase request has been submitted and requires your review.\n\nREQUEST DETAILS\nRequest ID           : #{{ $('Save Request to Sheet').item.json['Unique ID'] }}\nEmployee             : {{ $('Form Trigger').item.json['Employee Code'] }}\nProduct              : {{ $('Form Trigger').item.json['Product Name'] }}\nProposed Price (IDR) : Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\nSubmitted At         : {{ new Date($('Form Trigger').item.json.submittedAt).toLocaleString('en-US', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) }}\n\nREASON FOR PURCHASE\n\"{{ $('Form Trigger').item.json['Purchase Reason'] }}\"\n\nAI MARKET ANALYSIS\nMarket Price       : {{ $('AI Market Research').item.json.output.market_price }}\nBest Deal          : {{ $('AI Market Research').item.json.output.best_deal_link }}\nSeller             : {{ $('AI Market Research').item.json.output.seller_name }}\nPrice Difference   : {{ $('AI Market Research').item.json.output.price_difference }}\nRisk Level         : {{ $('AI Market Research').item.json.output.risk_level }}\n\nAI SUMMARY\n{{ $('AI Market Research').item.json.output.summary }}\n\nIMPORTANT WARNING\n{{ $('AI Market Research').item.json.output.warning || \"No warning\"}}\n\nQUICK COMPARISON\nProposed Price    : Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\nMarket Price      : {{ $('AI Market Research').item.json.output.market_price }}\nDifference        : Rp{{ new Intl.NumberFormat('id-ID').format($json['Difference (IDR)']).replace(/,/g, '.') }}\nVerify Price      : {{ $('AI Market Research').item.json.output.best_deal_link }}\n\nDISCLAIMER\nThis analysis is provided by AI to assist your decision-making process.\nThe AI only analyzes price data from online marketplaces and does not evaluate business context, actual needs, or company policies.\nYOU as the approver are the only person qualified to determine whether this purchase is necessary and appropriate for the company.\n\nThis is an automated notification from the Purchase Request System.\nRequest ID: #{{ $('Save Request to Sheet').item.json['Unique ID'] }}\nIf you have questions, please contact the employee directly at {{ $('Get Employee Email').item.json.Email }}.\n\nACTION REQUIRED\nPlease click one of the buttons below to make your decision:",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        -160
+      ],
+      "id": "638eac24-645f-443e-aa56-af7947e802f1",
+      "name": "Send Approval Request (AI Found)",
+      "webhookId": "f899cd64-32dc-4be0-b96d-b12061f53ce7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OeuOlQg9q21mgF5Y",
+          "name": "Gmail account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "={{ $('Form Trigger').item.json['Approver Email'] }}",
+        "subject": "=Purchase Request Review Needed: {{ $('Form Trigger').item.json['Product Name'] }}",
+        "message": "=MANUAL REVIEW REQUIRED - AI RESEARCH FAILED\n\nDear Approver,\n\nA purchase request has been submitted, but the AI market research was unable to find the product.\n\nREQUEST DETAILS\nRequest ID           : #{{ $('Save Request to Sheet').item.json['Unique ID'] }}\nEmployee             : {{ $('Get Employee Email').item.json['Employee Name'] }}\nProduct              : {{ $('Form Trigger').item.json['Product Name'] }}\nProposed Price (IDR) : Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\nSubmitted At         : {{ new Date($('Form Trigger').item.json.submittedAt).toLocaleString('en-US', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) }}\n\nREASON FOR PURCHASE\n\"{{ $('Form Trigger').item.json['Purchase Reason'] }}\"\n\nAI RESEARCH STATUS\nProduct not found in market search\n\nPOSSIBLE REASONS\n1. The product name may be misspelled\n2. The product is only available offline\n3. The product is a B2B item not sold on public marketplaces\n4. The product is new and not yet listed online\n\nIMPORTANT WARNING\n{{ $('AI Market Research').item.json.output.warning || \"No warning\"}}\n\nRECOMMENDATION\n- If the product exists after manual research and the price is reasonable, APPROVE the request\n- If the product is overpriced or not found, REJECT the request\n- Consider suggesting an alternative product if available\n\nThis is an automated notification from the Purchase Request System.\nRequest ID: #{{ $('Save Request to Sheet').item.json['Unique ID'] }}\nIf you have questions, please contact the employee directly at {{ $('Get Employee Email').item.json.Email }}.\n\nACTION REQUIRED\nPlease click one of the buttons below to make your decision:",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        32
+      ],
+      "id": "f4c80c7e-e5d4-48b5-bc2c-60f09cbbefa1",
+      "name": "Send Approval Request (Manual Review)",
+      "webhookId": "f899cd64-32dc-4be0-b96d-b12061f53ce7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OeuOlQg9q21mgF5Y",
+          "name": "Gmail account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1YiG4qa36PriAps3Y6uUYkUhILuATBIaE9cJnFwQSrjw",
+          "mode": "list",
+          "cachedResultName": "Approval n8n Learn",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YiG4qa36PriAps3Y6uUYkUhILuATBIaE9cJnFwQSrjw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1905945213,
+          "mode": "list",
+          "cachedResultName": "Form Responses",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YiG4qa36PriAps3Y6uUYkUhILuATBIaE9cJnFwQSrjw/edit#gid=1905945213"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Unique ID": "={{ $('Save Request to Sheet').item.json['Unique ID'] }}",
+            "Approval Status": "={{ $json.data.approved ? 'APPROVED' : 'REJECTED' }}",
+            "Approved/Rejected At": "={{ new Date($json.data.respondedAt).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/\\//g, '-') }}"
+          },
+          "matchingColumns": [
+            "Unique ID"
+          ],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Employee Code",
+              "displayName": "Employee Code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Unique ID",
+              "displayName": "Unique ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Proposed Price (Rp)",
+              "displayName": "Proposed Price (Rp)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Approver's Email",
+              "displayName": "Approver's Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reason",
+              "displayName": "Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Market Price (AI)",
+              "displayName": "Market Price (AI)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Difference (IDR)",
+              "displayName": "Difference (IDR)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Percentage Difference",
+              "displayName": "Percentage Difference",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Product Found",
+              "displayName": "Product Found",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Product Link",
+              "displayName": "Product Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Approval Status",
+              "displayName": "Approval Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Approved/Rejected At",
+              "displayName": "Approved/Rejected At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1776,
+        -64
+      ],
+      "id": "ba65ff80-54f7-48a9-aa9a-34f2c9eb8818",
+      "name": "Update Approval Status",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0T5RBgkNNFW5XA0P",
+          "name": "Google Sheets account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "30e01227-41d8-43d2-bf10-bb820dcc9e4b",
+              "leftValue": "={{ $('AI Market Research').item.json.output.product_found }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2000,
+        -64
+      ],
+      "id": "1649f90b-2f6f-4de4-80f3-02708aa52bf0",
+      "name": "Product Found Branch"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9e34bcc9-bf97-426b-9965-adbe51389266",
+              "leftValue": "={{ $('Send Approval Request (AI Found)').item.json.data.approved }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2224,
+        -256
+      ],
+      "id": "117bc8a5-ce74-4425-90a9-d35985d65638",
+      "name": "Approval Decision (AI Found)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ac9bbd28-220d-46d9-b4ad-d49bc707d336",
+              "leftValue": "={{ $('Send Approval Request (Manual Review)').item.json.data.approved }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2224,
+        128
+      ],
+      "id": "da292c71-e33d-413d-b54a-a8faa81876cb",
+      "name": "Approval Decision (Manual)"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Employee Email').item.json.Email }}",
+        "subject": "Purchase Request Approved",
+        "emailType": "text",
+        "message": "=PURCHASE REQUEST APPROVED\n\nDear {{ $('Get Employee Email').item.json['Employee Name'] }},\n\nWe are pleased to inform you that your purchase request has been APPROVED.\n\nREQUEST DETAILS\nRequest ID       : #{{ $('Save Request to Sheet').item.json['Unique ID'] }}\nProduct          : {{ $('Form Trigger').item.json['Product Name'] }}\nYour Proposed Price : Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\nApproved At      : {{ new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) }}\n\nAPPROVED BUDGET\nApproved Amount  : {{ $('AI Market Research').item.json.output.market_price }}\n\nPURCHASE INSTRUCTION\nPlease purchase the product using the link below (best deal found by AI):\nProduct Link     : {{ $('AI Market Research').item.json.output.best_deal_link }}\nSeller           : {{ $('AI Market Research').item.json.output.seller_name }}\n\nNEXT STEPS\n1. Click the link above to purchase the product\n2. Use the approved budget of {{ $('AI Market Research').item.json.output.market_price }}\n3. Submit the receipt for reimbursement if needed\n4. Complete the purchase within 7 working days\n\nIf you have any questions, please contact your approver directly.\n\nThank you,\nProcurement Team",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2640,
+        -336
+      ],
+      "id": "4d404c63-fe12-43e1-9585-91ad0467f21f",
+      "name": "Notify Employee: Approved (AI)",
+      "webhookId": "f6a75b20-5a4c-468e-99ce-71419e8babf2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OeuOlQg9q21mgF5Y",
+          "name": "Gmail account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Employee Email').item.json.Email }}",
+        "subject": "Purchase Request Rejected",
+        "emailType": "text",
+        "message": "=PURCHASE REQUEST REJECTED\n\nDear {{ $('Get Employee Email').item.json['Employee Name'] }},\n\nWe regret to inform you that your purchase request has been REJECTED.\n\nREQUEST DETAILS\nRequest ID       : #{{ $('Save Request to Sheet').item.json['Unique ID'] }}\nProduct          : {{ $('Form Trigger').item.json['Product Name'] }}\nProposed Price   : Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\nSubmitted At     : {{ new Date($('Form Trigger').item.json.submittedAt).toLocaleString('en-US', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) }}\n\nREASON FOR REJECTION\nPlease contact your approver directly for more details on why this request was rejected.\n\nNEXT STEPS\nIf you believe this rejection was made in error, please:\n1. Discuss with your approver for clarification\n2. Submit a new request with updated information if needed\n3. Consider finding a cheaper alternative from the link below\n   Best Deal Link  : {{ $('AI Market Research').item.json.output.best_deal_link || 'Not available' }}\n   Seller          : {{ $('AI Market Research').item.json.output.seller_name }}\n\nIf you have any questions, please contact your approver directly.\n\nThank you,\nProcurement Team",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2640,
+        -144
+      ],
+      "id": "43508565-e44f-477b-a1b1-7a0823dcf2b4",
+      "name": "Notify Employee: Rejected (AI)",
+      "webhookId": "94b0cad7-376f-4ff7-8e83-4914561d7779",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OeuOlQg9q21mgF5Y",
+          "name": "Gmail account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Employee Email').item.json.Email }}",
+        "subject": "Purchase Request Approved (Manual Review)",
+        "emailType": "text",
+        "message": "=PURCHASE REQUEST APPROVED (MANUAL REVIEW)\n\nDear {{ $('Get Employee Email').item.json['Employee Name'] }},\n\nWe are pleased to inform you that your purchase request has been APPROVED.\n\nREQUEST DETAILS\nRequest ID       : #{{ $('Save Request to Sheet').item.json['Unique ID'] }}\nProduct          : {{ $('Form Trigger').item.json['Product Name'] }}\nYour Proposed Price : Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\nApproved At      : {{ new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) }}\n\nNOTE: This request was manually reviewed because the AI could not find the product in online marketplaces.\n\nAPPROVED BUDGET\nApproved Amount  : Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\n\nPURCHASE INSTRUCTION\nSince the AI could not find the product, please:\n1. Purchase the product from a trusted vendor\n2. Use the approved budget of Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\n3. Ensure the product matches the specifications you requested\n4. Keep all receipts for reimbursement purposes\n5. Complete the purchase within 7 working days\n\nIf you have any questions, please contact your approver directly.\n\nThank you,\nProcurement Team",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2640,
+        48
+      ],
+      "id": "e4d79b64-a5dd-4344-b0aa-aa36e19ce022",
+      "name": "Notify Employee: Approved (Manual)",
+      "webhookId": "f6a75b20-5a4c-468e-99ce-71419e8babf2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OeuOlQg9q21mgF5Y",
+          "name": "Gmail account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Employee Email').item.json.Email }}",
+        "subject": "Purchase Request Rejected (Manual Review)",
+        "emailType": "text",
+        "message": "=PURCHASE REQUEST REJECTED (MANUAL REVIEW)\n\nDear {{ $('Get Employee Email').item.json['Employee Name'] }},\n\nWe regret to inform you that your purchase request has been REJECTED.\n\nREQUEST DETAILS\nRequest ID       : #{{ $('Save Request to Sheet').item.json['Unique ID'] }}\nProduct          : {{ $('Form Trigger').item.json['Product Name'] }}\nProposed Price   : Rp{{ new Intl.NumberFormat('id-ID').format($('Form Trigger').item.json['Proposed Price (IDR)']).replace(/,/g, '.') }}\nSubmitted At     : {{ new Date($('Form Trigger').item.json.submittedAt).toLocaleString('en-US', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) }}\n\nNOTE: This request was manually reviewed because the AI could not find the product in online marketplaces.\n\nREASON FOR REJECTION\nPlease contact your approver directly for more details on why this request was rejected.\n\nNEXT STEPS\nIf you believe this rejection was made in error, please:\n1. Discuss with your approver for clarification\n2. Submit a new request with updated information if needed\n3. Consider providing more specific product details (brand, model, specifications)\n4. Try searching the product yourself on Tokopedia, Shopee, or Blibli\n\nIf you have any questions, please contact your approver directly.\n\nThank you,\nProcurement Team",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2640,
+        240
+      ],
+      "id": "1534bd09-bf04-423e-a9cb-8fda229801f8",
+      "name": "Notify Employee: Rejected (Manual)",
+      "webhookId": "94b0cad7-376f-4ff7-8e83-4914561d7779",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OeuOlQg9q21mgF5Y",
+          "name": "Gmail account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 📋 SECTION 1: INPUT & VALIDATION\n\n## Purpose\nCollect employee purchase request and validate employee identity.\n\n## How It Works\n1. Employee fills out the form with:\n   - Employee Code (acts as a password)\n   - Product details\n   - Proposed price\n   - Approver email\n   - Purchase reason\n\n2. System checks if the Employee Code exists in the database:\n   - ✅ **Valid**: Proceed to save request & send confirmation\n   - ❌ **Invalid**: Do nothing (security measure - prevents misuse)\n\n3. Request is saved to Google Sheets with status \"UNDER REVIEW\"\n\n## Important Notes\n- **Employee Code is sensitive** - treat it like a password\n- If someone uses a wrong code, no action is taken\n- If a code is leaked, the employee must request a new one\n\n## Output\n- Request saved to database with unique ID\n- Confirmation email sent to employee",
+        "height": 1072,
+        "width": 1248,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -752,
+        -752
+      ],
+      "typeVersion": 1,
+      "id": "12ce75d5-8dd1-49d1-ab72-f9184a67f3bc",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# 🤖 SECTION 2: AI MARKET RESEARCH\n\n## Purpose\nResearch product market price and find the best deal online.\n\n## How It Works\n1. AI Agent receives:\n   - Product name\n   - Proposed price\n   - Purchase reason\n\n2. AI searches the internet using Tavily:\n   - Finds current market price\n   - Identifies the best deal (lowest price from trusted seller)\n   - Captures the product link\n\n3. AI calculates:\n   - Price difference (proposed vs market)\n   - Percentage difference\n   - Risk level (LOW/MEDIUM/HIGH/CRITICAL)\n   - Generates summary & warning (if any)\n\n4. Results are saved to Google Sheets with status \"AWAITING APPROVAL\"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n## Important Notes\n- **Product Found = TRUE**: Full AI analysis available\n- **Product Found = FALSE**: Manual review required (AI couldn't find product)\n\n## Output\n- Market price\n- Best deal link\n- Risk assessment\n- AI summary & warning",
+        "height": 1408,
+        "width": 640,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        528,
+        -752
+      ],
+      "typeVersion": 1,
+      "id": "d589986a-056f-443b-aef5-ff0a4b93e3f1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# 🔀 SECTION 3: ROUTING - PRODUCT FOUND?\n\n## Purpose\nRoute the request based on whether AI found the product.\n\n## Decision Logic\n| Condition | Action |\n|-----------|--------|\n| **Product Found = TRUE** | Send approval email with full AI analysis |\n| **Product Found = FALSE** | Send manual review email (AI failed) |\n\n## What Approver Sees\n### ✅ AI Found (TRUE)\n- Market price & best deal link\n- Price difference & savings\n- Risk level & AI summary\n- Verification link included\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n### ⚠️ Manual Review (FALSE)\n- \"Product not found\" message\n- Possible reasons (typo, offline only, new product)\n- Recommendation to manually verify\n\n## Important Notes\n- This is the **branching point** for the workflow\n- Both paths lead to the approver decision",
+        "height": 1232,
+        "width": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1200,
+        -752
+      ],
+      "typeVersion": 1,
+      "id": "eb450ddd-7d74-4bd7-97d5-6ec4763f63a7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# 📧 SECTION 4: APPROVAL PROCESS\n\n## Purpose\nSend request to approver and wait for their decision.\n\n## How It Works\n1. Approver receives email with:\n   - Request details (product, price, reason)\n   - AI analysis (or manual review notice)\n   - **APPROVE** and **REJECT** buttons\n\n2. Approver clicks one button:\n   - ✅ **APPROVE**: Request is approved\n   - ❌ **REJECT**: Request is rejected\n\n3. System waits for response (Gmail Send & Wait)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n## Important Notes\n- **Two email types**:\n  - AI Found: Full AI analysis included\n  - Manual Review: AI failed, approver must verify manually\n\n- **Disclaimer**: AI only analyzes price data, not business context. Approver makes final decision.\n\n## Output\n- Decision recorded (APPROVED / REJECTED)\n- Timestamp of decision captured",
+        "height": 1328,
+        "width": 656,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1712,
+        -752
+      ],
+      "typeVersion": 1,
+      "id": "a2bff32a-1162-4b28-b334-9f1ddfb8455c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# 📨 SECTION 5: FINAL DECISION & NOTIFICATION\n\n## Purpose\nRoute approver's decision and notify employee.\n\n## How It Works\n1. System routes based on approver's decision:\n   - **APPROVED** → Send approval email\n   - **REJECTED** → Send rejection email\n\n2. Google Sheets is updated with:\n   - Final status (APPROVED / REJECTED)\n   - Decision timestamp\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n3. Employee receives email with:\n   - ✅ **Approved**: Budget, purchase link, next steps\n   - ❌ **Rejected**: Reason, next steps, alternative suggestions\n\n## Important Notes\n- **4 Email Templates** based on:\n  1. AI Found + Approved\n  2. AI Found + Rejected\n  3. Manual Review + Approved\n  4. Manual Review + Rejected\n\n## Output\n- Final status in Google Sheets\n- Notification email to employee",
+        "height": 1616,
+        "width": 528,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2416,
+        -752
+      ],
+      "typeVersion": 1,
+      "id": "00fad5ee-0bc5-47b1-baaa-6b92da95d7f0",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# 📊 SECTION 6: DATA FLOW SUMMARY\n\n## Google Sheets Schema\n\n### Main Sheet: \"Form Responses\"\n\n| Column | Description | Example |\n|--------|-------------|---------|\n| Timestamp | Submission time | 24-08-2026 14:30 |\n| Employee Code | Employee identifier | EMP-001 |\n| Unique ID | Auto-generated (execution_id + emp_code) | 123456-EMP-001 |\n| Product Name | Requested product | MacBook Pro M3 |\n| Proposed Price (Rp) | Employee's proposed price | 20,000,000 |\n| Approval Status | Current status | UNDER REVIEW → AWAITING APPROVAL → APPROVED/REJECTED |\n| Market Price (AI) | AI found market price | 12,500,000 |\n| Product Link | Best deal link | https://tokopedia.com/... |\n| Approved/Rejected At | Decision timestamp | 24-08-2026 15:30 |\n\n## Status Flow\nUNDER REVIEW → AWAITING APPROVAL → APPROVED / REJECTED\n\n## Unique ID Format\n{execution_id}-{employee_code}\nExample: 1234567890-EMP-001\n",
+        "height": 800,
+        "width": 976,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2976,
+        -752
+      ],
+      "typeVersion": 1,
+      "id": "2be8f2fa-c9fb-46f5-b01c-87aa5f45814f",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "# 🚀 QUICK START GUIDE (For New Users)\n\n## Prerequisites\n1. **Google Sheets** with employee database (columns: Employee Code, Employee Name, Email)\n2. **Google Sheets** for storing requests (auto-created)\n3. **Gmail** account for sending emails\n4. **Tavily API** key for AI search\n5. **Google Gemini API** key for AI agent\n\n## Setup Steps\n1. **Connect credentials** for all services:\n   - Google Sheets OAuth2\n   - Gmail OAuth2\n   - Tavily API\n   - Google Gemini API\n\n2. **Update Google Sheets IDs** in nodes:\n   - Employee Database: Update `documentId` in \"Get Employee Database\"\n   - Request Database: Update `documentId` in \"Save Request to Sheet\"\n\n3. **Test the form**:\n   - Submit a request with a valid employee code\n   - Verify email confirmation is received\n   - Check approver email with buttons\n   - Test both APPROVE and REJECT actions\n\n## Troubleshooting\n- **AI not finding product**: Normal - product may not be online\n- **Email not sending**: Check Gmail credentials\n- **Sheet update failing**: Check document ID and sheet name\n\n## Security Note\n- Employee Code acts as a password\n- Invalid codes trigger NO action (silent failure)\n- Leaked codes require HR to issue new ones",
+        "height": 1024,
+        "width": 608
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1392,
+        -752
+      ],
+      "typeVersion": 1,
+      "id": "2dd8795d-f1fb-4d23-a23e-a01fe3d44e9a",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Employee Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Employee Database": {
+      "main": [
+        [
+          {
+            "node": "Validate Employee Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Employee Code": {
+      "main": [
+        [
+          {
+            "node": "Get Employee Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Employee Email": {
+      "main": [
+        [
+          {
+            "node": "Save Request to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Request to Sheet": {
+      "main": [
+        [
+          {
+            "node": "Valid Employee?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid Employee?": {
+      "main": [
+        [
+          {
+            "node": "Send Confirmation to Employee",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Invalid Code - Do Nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Confirmation to Employee": {
+      "main": [
+        [
+          {
+            "node": "AI Market Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Market Research": {
+      "main": [
+        [
+          {
+            "node": "Save AI Results to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Market Research",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Market Research",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Output": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Market Research",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save AI Results to Sheet": {
+      "main": [
+        [
+          {
+            "node": "Product Found?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Product Found?": {
+      "main": [
+        [
+          {
+            "node": "Send Approval Request (AI Found)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Approval Request (Manual Review)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Approval Request (AI Found)": {
+      "main": [
+        [
+          {
+            "node": "Update Approval Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Approval Request (Manual Review)": {
+      "main": [
+        [
+          {
+            "node": "Update Approval Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Approval Status": {
+      "main": [
+        [
+          {
+            "node": "Product Found Branch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Product Found Branch": {
+      "main": [
+        [
+          {
+            "node": "Approval Decision (AI Found)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Approval Decision (Manual)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Decision (AI Found)": {
+      "main": [
+        [
+          {
+            "node": "Notify Employee: Approved (AI)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Employee: Rejected (AI)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Decision (Manual)": {
+      "main": [
+        [
+          {
+            "node": "Notify Employee: Approved (Manual)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Employee: Rejected (Manual)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Employee: Approved (AI)": {
+      "main": [
+        []
+      ]
+    },
+    "Notify Employee: Rejected (AI)": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Jakarta",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "Yi6Amdrse6LPMClq"
+  },
+  "versionId": "70970262-e769-46a9-86cf-318024bde36a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "352de1dfab49e3f2827fed937d4c637b6f42d86627f4f11d2e80d40f6758b2b9"
+  },
+  "nodeGroups": [],
+  "id": "qcTSFasyZDE31Aif",
+  "tags": []
+}

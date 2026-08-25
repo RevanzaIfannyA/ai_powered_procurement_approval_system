@@ -1,0 +1,199 @@
+{
+  "name": "Universal Error Logger",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "35348acb-2d6b-4cdb-9580-3c451357e680",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Vh40mWpkxV1Ae6amcKaE1aftvNHllqszN6c89rsL_Qs",
+          "mode": "list",
+          "cachedResultName": "n8n Workflows Error Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Vh40mWpkxV1Ae6amcKaE1aftvNHllqszN6c89rsL_Qs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Vh40mWpkxV1Ae6amcKaE1aftvNHllqszN6c89rsL_Qs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) }}",
+            "Workflow Name": "={{ $json.workflow.name }}",
+            "Workflow ID": "={{ $json.workflow.id }}",
+            "Execution ID": "={{ $json.execution.id }}",
+            "Node Name": "={{ $json.execution.lastNodeExecuted }}",
+            "Error Message": "={{ $json.execution.error.message }}",
+            "Execution URL": "={{ $json.execution.url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Workflow Name",
+              "displayName": "Workflow Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Workflow ID",
+              "displayName": "Workflow ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution ID",
+              "displayName": "Execution ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Node Name",
+              "displayName": "Node Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error Message",
+              "displayName": "Error Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution URL",
+              "displayName": "Execution URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        288,
+        -96
+      ],
+      "id": "a7451860-d248-4f8c-8c16-2e1d2193505d",
+      "name": "Logging Error",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0T5RBgkNNFW5XA0P",
+          "name": "Google Sheets account prima"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_EMAIL",
+        "subject": "=Workflow Error: {{ $json.workflow.name }}",
+        "emailType": "text",
+        "message": "=🚨 WORKFLOW ERROR NOTIFICATION\n\nA workflow has encountered an error.\n\nDETAILS\nWorkflow Name   : {{ $('Error Trigger').item.json.workflow.name }}\nWorkflow ID     : {{ $('Error Trigger').item.json.workflow.id }}\nExecution ID    : {{ $('Error Trigger').item.json.execution.id }}\nNode Name       : {{ $('Error Trigger').item.json.execution.lastNodeExecuted }}\nError Time      : {{ new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) }}\n\nERROR MESSAGE\n{{ $('Error Trigger').item.json.execution.error.message }}\n\nACTION REQUIRED\n1. Check the error log in Google Sheets or check this link for direct access to the execution:\n{{ $('Error Trigger').item.json.execution.url }}\n2. Investigate the node that failed: {{ $('Error Trigger').item.json.execution.lastNodeExecuted }}\n3. Re-run the workflow if needed\n\nThis is an automated notification from the n8n Error Handler.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        80
+      ],
+      "id": "97ca8907-131f-4af6-b0c7-aee9af5d657e",
+      "name": "Admin Notification",
+      "webhookId": "5a0c6bae-5716-4fc6-9a1e-b04760c76724",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OeuOlQg9q21mgF5Y",
+          "name": "Gmail account prima"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Logging Error",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Admin Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Logging Error": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "2fb64222-3d1c-4a15-888d-722f5d447ab1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "352de1dfab49e3f2827fed937d4c637b6f42d86627f4f11d2e80d40f6758b2b9"
+  },
+  "nodeGroups": [],
+  "id": "Yi6Amdrse6LPMClq",
+  "tags": []
+}
